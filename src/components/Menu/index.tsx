@@ -65,7 +65,7 @@ export default function Menu() {
                           <li className="nav-item"><a className="nav-link" href="#tokenomics">TOKENOMICS</a></li>
                           <li className="nav-item"><a className="nav-link" href="#buy">HOW TO BUY</a></li>
                           <li className="nav-item"><a className="nav-link" href="#team">TEAM</a></li>
-                          <li className="nav-item"><a className="nav-link" href="https://dapp.moonshield.finance/">LAUNCH DAPP</a></li>
+                          <li className="nav-item"><a className="nav-link" href="https://moonshield.finance/dashboard">LAUNCH DAPP</a></li>
                       </ul>
                     </div>
                 </div>
