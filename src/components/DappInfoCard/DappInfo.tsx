@@ -172,7 +172,7 @@ return (
                             </div>
                             <div className="row">
                                 <div className="col">
-                                    <p>BNB {BNBinRewardPool}</p>
+                                    <p>BNB {BNBinRewardPool.toLocaleString()}</p>
                                 </div>
                             </div>
                         </section>

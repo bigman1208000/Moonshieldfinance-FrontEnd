@@ -87,7 +87,7 @@ getBurnAmount()
                             </a>
                         </div>
                         <div className="col font-monospace flex-grow-1">
-                            <a className="btn btn-primary font-monospace btn-xl rounded-pill btn-border bg-primary carbon-bg-gray" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" href="https://dapp.moonshield.finance/" title="Claim your $BNB here">
+                            <a className="btn btn-primary font-monospace btn-xl rounded-pill btn-border bg-primary carbon-bg-gray" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" href="https://moonshield.finance/dashboard" title="Claim your $BNB here">
                                 OPEN DAPP
                             </a>
                         </div>

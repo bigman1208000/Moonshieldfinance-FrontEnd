@@ -4,6 +4,7 @@ import { useGettingTime } from '../hooks/useContract'
 
 const ZERO = new BigNumber(0)
 
+
 export const useGetTime = () => {
   const [time, setTime] = useState(new BigNumber(0))
   const getTimeContract = useGettingTime()

@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber.js/bignumber'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
@@ -10,7 +10,10 @@ import { claimBNBReward } from '../../../tokencontract/utils'
 import useTokenContract from '../../../hooks/useTokenContract'
 import { MSHLDTokenAddress } from '../../../constants/tokenAddresses'
 import { useNextClaimDate } from '../../../hooks/useSlotBalance'
-import { useGettingTime } from '../../../hooks/useContract'
+import { useCollectBNB } from '../../../hooks/useMoonshield'
+import { useGetTime } from '../../../state/hooks'
+import { toLocaleString, toUTCString } from '../../../utils/translateTextHelpers'
+import CollectButton from '../../../components/CollectButton'
 
 const StyledArea = styled.div`
   box-sizing: border-box;
@@ -102,6 +105,8 @@ const WriteClaim: React.FC = () => {
   const history = useHistory()
   const [calculatedReward, setCalculatedReward] = useState(0)
   const [BNBRewardPool, setRewardPool] = useState('')
+  const [nextClaimDT, setClaimDate] = useState('')
+  //const nowDate DateTime
 
   const wallet = bsc.useWallet()
 
@@ -121,6 +126,16 @@ const WriteClaim: React.FC = () => {
     )
   }
 
+  const getNextClaimDate = async () => {
+    if (wallet.account) {
+      const nextClaimDate = await MSHLDContract.methods.nextAvailableClaimDate(wallet.account).call()
+      var d = new Date(nextClaimDate);
+      var ds = d.toLocaleString()
+      const nextclaimdateLocale = nextClaimDate === 0 ? 'Not available' : toLocaleString(new Date(nextClaimDate*1000))
+        setClaimDate(d.toString())
+    }
+  }
+
   const getMaxTransactionAmount = async () => {
     if (wallet.account) {
       const reward = await MSHLDContract.methods
@@ -130,8 +145,12 @@ const WriteClaim: React.FC = () => {
     }
   }
 
+  // const collectibleBNB = useMoonBalance(account);
+  //  const BNBNum = calculatedReward/1000000000000000000
+  const formattedBNBNum = calculatedReward === 0?'0':calculatedReward.toLocaleString('en-US', {minimumFractionDigits: 8})
+  
   const mynextclaimdate = useNextClaimDate(wallet.account)
-  const nowdate = useGettingTime()
+  const nowdate = useGetTime()
   const nextclaimdateGmt = mynextclaimdate.toNumber() === 0?"":toUTCString(new Date(mynextclaimdate.toNumber()*1000))
   const nextclaimdateLocale = mynextclaimdate.toNumber() === 0?"Not available":toLocaleString(new Date(mynextclaimdate.toNumber()*1000))
 
@@ -143,6 +162,7 @@ const WriteClaim: React.FC = () => {
 
   getMaxTransactionAmount()
   getBalance()
+  getNextClaimDate()
 
   return (    
     <>    
@@ -168,58 +188,17 @@ const WriteClaim: React.FC = () => {
               </h1>
               <div className="row features p-1 m-sm-15">
                 <div className="col col-12 justify-content-center align-items-center d-flex flex-column flex-wrap">
-                  <a className="btn btn-primary font-monospace btn-xl rounded-pill btn-border bg-primary carbon-bg-gray" role="button" data-bs-toggle="tooltip" data-bss-tooltip="" onClick={handleClaimClick} title="Collect your $BNB reward">
-                    COLLECT MY BNB
-                  </a>
+                  <CollectButton style={{ color:'#fff' }} onClick={handleClaimClick} disabled = {!calculatedReward || mynextclaimdate.toNumber() > nowdate.toNumber()}>
+                    Collect my BNB
+                  </CollectButton>
                 </div>
               </div>
             </section>
           </div>
         </StyledClaim>
       </div>
-      {/* <StyledArea>
-        <StyledIconArea>
-          <StyledInfo> Reward Pool </StyledInfo>
-          <StyledIcon>
-            <img style={{ height: 80, borderRadius: 25 }} src={rewardPool} />
-          </StyledIcon>
-          <StyledInfo> BNB {BNBRewardPool} </StyledInfo>
-        </StyledIconArea>
-        <StyledInfoArea>
-          <StyledInfo>
-            My reward: <StyledValue>0.000000 BNB</StyledValue>
-          </StyledInfo>
-          <StyledNote>
-            *pool is always changing based on buys, sells, and collects by others,
-          learn more here{' '}
-            <span>
-              <a href="#" target="_blank">
-                <i className="fa fa-question-circle"></i>
-              </a>
-            </span>
-          </StyledNote>
-          <StyledInfo>
-            My collectible BNB: {calculatedReward}
-          </StyledInfo>
-          <StyledClaimButtonArea>
-            <Button onClick={handleClaimClick}>
-              <span>
-                <i className="fa fa-gift"></i> Claim My Reward
-              </span>
-            </Button>
-          </StyledClaimButtonArea>
-        </StyledInfoArea>
-      </StyledArea> */}
     </>
   )
 }
 
 export default WriteClaim
-
-function toUTCString(arg0: Date) {
-  return;
-}
-
-function toLocaleString(arg0: Date) {
-  return;
-}
