@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useRef, useEffect } from 'react'
 // import { BookOpen, Code, PieChart, MessageCircle, Send } from 'react-feather'
 import styled from 'styled-components'
