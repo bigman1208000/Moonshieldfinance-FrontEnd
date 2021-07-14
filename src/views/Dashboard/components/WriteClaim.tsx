@@ -141,7 +141,7 @@ const WriteClaim: React.FC = () => {
       const reward = await MSHLDContract.methods
         .calculateBNBReward(wallet.account)
         .call()
-      setCalculatedReward(reward / 1000000000000000000)
+      setCalculatedReward(Math.round((reward / 1000000000000000000) * 100) / 100)
     }
   }
 

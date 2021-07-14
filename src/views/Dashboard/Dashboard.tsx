@@ -143,8 +143,8 @@ const Home: React.FC = () => {
       const balance = await MSHLDContract.methods
         .balanceOf(wallet.account)
         .call()
-      setCurrencyBalance(web3.utils.toBN(balance).toNumber() / 1000000000)
-      return (web3.utils.toBN(balance).toNumber() / 1000000000).toLocaleString('en-US', {maximumFractionDigits: 3})
+      setCurrencyBalance(web3.utils.toBN(balance).div(web3.utils.toBN(1000000000)).toNumber())
+      return (web3.utils.toBN(balance).div(web3.utils.toBN(1000000000)).toNumber()).toLocaleString('en-US', {maximumFractionDigits: 3})
     }
   }
 
